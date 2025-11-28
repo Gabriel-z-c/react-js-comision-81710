@@ -1,10 +1,12 @@
-// src/components/NavBar.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useCart } from '../contexts/CartContext';  // Usamos el hook para acceder al carrito
 import CartWidget from './CartWidget';
+import { Link } from 'react-router-dom';
 import '../styles/estilos.css';
 
-const NavBar = ({ cart }) => {
+const NavBar = () => {
+  const { cart } = useCart();  // Obtener el carrito desde el contexto
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -17,11 +19,11 @@ const NavBar = ({ cart }) => {
           <Link className="a-nav" to="/category/mas-vendidos">Más Vendidos</Link>
           <Link className="a-nav" to="/category/ofertas">Ofertas</Link>
           <Link className="a-nav" to="/category/novedades">Novedades</Link>
-          <CartWidget cart={cart} />
+          <CartWidget cart={cart} /> {/* Pasamos el carrito actualizado al CartWidget */}
         </div>
       </div>
     </nav>
   );
 };
 
-export default NavBar;  // Asegúrate de que se está exportando correctamente
+export default NavBar;

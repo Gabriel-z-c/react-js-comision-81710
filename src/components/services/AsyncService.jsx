@@ -1,64 +1,22 @@
-const products = [
-  {
-    id: 1,
-    name: 'Body scrub',
-    description: 'Aroma todo el día',
-    price: 12800,
-    category: 'mas-vendidos',
-    img: '/img/body-scrub.jpg',
-    stock: 10
-  },
-  {
-    id: 2,
-    name: 'Crema en barra',
-    description: 'Crema para todo tipo de pieles',
-    price: 2936,
-    category: 'ofertas',
-    img: '/img/crema.jpg',
-    stock: 15
-  },
-  {
-    id: 3,
-    name: 'Jabón',
-    description: 'Jabones perfumados, para todo tipo de pieles',
-    price: 3698,
-    category: 'novedades',
-    img: '/img/jabon.jpg',
-    stock: 8
-  },
-  {
-    id: 4,
-    name: 'Pack para baño',
-    description: 'Disfruta de un baño perfumado y natural',
-    price: 5820,
-    category: 'mas-vendidos',
-    img: '/img/jabon-esponjas.jpg',
-    stock: 20
-  }
-];
+import { getDoc, doc } from "firebase/firestore";
+import { db } from "./services/firebase";
 
-// Obtener un producto por su ID
-export const getProductById = (id) => {
-  return new Promise((resolve, reject) => {
-    const product = products.find((p) => p.id === parseInt(id)); // Buscar producto por ID
-    if (product) {
-      resolve(product); // Resolvemos la promesa con el producto
+// Obtener un producto específico por ID desde Firestore
+export const getProductById = async (id) => {
+  console.log(`Buscando producto con ID: ${id}`);
+  try {
+    const docRef = doc(db, "productos", id); // Asegúrate de que el nombre de la colección sea 'productos'
+    const docSnapshot = await getDoc(docRef);
+
+    if (docSnapshot.exists()) {
+      console.log("Producto encontrado:", docSnapshot.data());
+      return { id: docSnapshot.id, ...docSnapshot.data() };
     } else {
-      reject("Producto no encontrado"); // Rechazamos la promesa si no encontramos el producto
+      console.log("Producto no encontrado");
+      throw new Error("Producto no encontrado");
     }
-  });
-};
-
-// Obtener todos los productos
-export const getProducts = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(products); // Resolvemos la promesa con todos los productos después de 1 segundo
-    }, 1000);
-  });
-};
-
-// Obtener productos por categoría
-export const getProductsByCategory = (categoryId) => {
-  return products.filter(product => product.category === categoryId); // Filtramos productos por categoría
+  } catch (error) {
+    console.error("Error al obtener el producto:", error);
+    throw new Error("Error al obtener el producto");
+  }
 };

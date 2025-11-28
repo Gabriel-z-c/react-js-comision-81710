@@ -8,10 +8,10 @@
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
-  background-color: #f4f4f4;
+  background-color: #f4f4f4; 
   color: #333;
-  padding-top: 80px; /* Asegura que el contenido no quede cubierto por el navbar */
-  background-image: url('/path/to/your/background-image.jpg'); /* Imagen de fondo */
+  padding-top: 80px; 
+  background-image: url('/path/to/your/background-image.jpg'); 
   background-size: cover;
   background-position: center center;
 }
@@ -37,7 +37,7 @@ body {
 }
 
 .navbar-logo img {
-  width: 150px;  /* Tamaño adecuado para el logo */
+  width: 150px; 
   height: auto;
   display: block;
 }
@@ -72,7 +72,7 @@ body {
   background-color: #F5F5DC;
   color: #2E7D32;
   font-size: 1.5rem;
-  margin-top: 70px; /* Ajuste para que no quede cubierto por el navbar */
+  margin-top: 70px; 
 }
 
 .product-list {
@@ -92,13 +92,13 @@ body {
 }
 
 .product-item:hover {
-  transform: translateY(-5px); /* Efecto de elevación al pasar el cursor */
+  transform: translateY(-5px); 
 }
 
 .product-item img {
   width: 100%;
   height: auto;
-  max-width: 250px; /* Limitar el tamaño máximo de las imágenes */
+  max-width: 250px; 
   margin-bottom: 1rem;
 }
 
@@ -126,14 +126,14 @@ body {
 }
 
 .item-detail-container img {
-  width: 80%; /* Asegura que la imagen no sea demasiado grande */
+  width: 80%; 
   height: auto;
   margin: 1rem 0;
-  transition: transform 0.3s ease-in-out; /* Agregar transición */
+  transition: transform 0.3s ease-in-out;
 }
 
 .item-detail-container img:hover {
-  transform: scale(1.05); /* Efecto de zoom suave */
+  transform: scale(1.05); 
 }
 
 /* --- Button Hover Styles --- */
@@ -147,7 +147,7 @@ body {
 }
 
 .btn-dark:hover {
-  background-color: #4CAF50; /* Cambio de color en hover */
+  background-color: #4CAF50; 
   border-color: #4CAF50;
   color: white;
 }
@@ -155,12 +155,12 @@ body {
 /* --- Responsiveness --- */
 @media (max-width: 768px) {
   .product-list {
-    flex-direction: column; /* Coloca los productos en una sola columna en pantallas pequeñas */
+    flex-direction: column; 
     align-items: center;
   }
 
   .product-item {
-    width: 100%; /* Asegura que los productos ocupen el 100% del ancho disponible */
+    width: 100%; 
     margin-bottom: 1rem;
   }
 
