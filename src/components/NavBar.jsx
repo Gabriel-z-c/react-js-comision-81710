@@ -1,4 +1,4 @@
-// src/components/NavBar.jsx
+src/components/NavBar.jsx
 import React from 'react';
 import { useCart } from '../contexts/CartContext';  // Acceder al carrito
 import { Link } from 'react-router-dom';
@@ -27,4 +27,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default NavBar;           

@@ -15,25 +15,17 @@ const ItemListContainer = ({ greeting = "Bienvenido" }) => {
     const fetchProducts = async () => {
       setLoading(true);  // Activamos el estado de carga
       try {
-        let fetchedProducts = [];
+            const products = categoryId
+          ? await getProductsByCategory(categoryId)
+          : await getProductsFromFirestore();
+
+       let fetchedProducts = products.map((product) => ({
+          id: product.id,
+          ...product,
+          img: product.img || 'https://via.placeholder.com/250',
+        }));
+
         
-        if (categoryId) {
-          // Si hay un categoryId, obtenemos los productos por categoría
-          const products = await getProductsByCategory(categoryId);
-          fetchedProducts = products.map((product) => ({
-            id: product.id,
-            ...product,
-            imgUrl: product.imgUrl || 'https://via.placeholder.com/250',  // Usa una imagen de placeholder si no existe una imagen
-          }));
-        } else {
-          // Si no hay un categoryId, traemos todos los productos
-          const products = await getProductsFromFirestore();
-          fetchedProducts = products.map((product) => ({
-            id: product.id,
-            ...product,
-            imgUrl: product.imgUrl || 'https://via.placeholder.com/250',  // Usa una imagen de placeholder
-          }));
-        }
         
         setProducts(fetchedProducts);  // Guardamos los productos obtenidos
       } catch (error) {

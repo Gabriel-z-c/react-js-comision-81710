@@ -1,22 +1,20 @@
-// src/components/CartView.jsx
 import React from 'react';
-import { useCart } from '../contexts/CartContext'; // Accedemos al contexto del carrito
+import { useCart } from '../contexts/CartContext';
 
 const CartView = () => {
-  const { cart, clearCart, getTotal } = useCart();  // Obtenemos el carrito, la función clear y getTotal desde el contexto
+  const { cart, clearCart } = useCart();  // Accede al carrito y la función para limpiar el carrito
 
-  if (cart.length === 0) {
-    return <p>El carrito está vacío</p>;
-  }
   return (
     <div>
       <h2>Tu carrito de compras</h2>
       {cart.map((producto) => (
         <div key={producto.id}>
-          <p>{producto.name} - ${producto.price} x {producto.quantity}</p>
+          <p>
+            {producto.name} - ${producto.price} x {producto.quantity}
+          </p>
         </div>
       ))}
-      <p>Total: ${getTotal()}</p>
+      <p>Total: ${cart.reduce((acc, item) => acc + item.price * item.quantity, 0)}</p>
       <button onClick={clearCart}>Vaciar carrito</button>
       <button>Finalizar compra</button>
     </div>

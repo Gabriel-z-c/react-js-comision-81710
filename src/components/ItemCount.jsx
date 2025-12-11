@@ -10,21 +10,13 @@ const ItemCount = ({ stock, onAdd }) => {
       setError('No puedes agregar más de lo que hay en stock.');
     }
   };
-
-  const handleDecrement = () => {
-    if (count > 1) {
-      setCount(count - 1);
-      setError('');
-    }
-  };
-
-  const handleAddToCart = () => {
-    if (count <= stock) {
-      onAdd(count);
-    } else {
-      setError('No puedes agregar más de lo que hay en stock.');
-    }
-  };
+const handleAddToCart = () => {
+  if (count <= stock) {
+    onAdd(count); // Se llama a la función onAdd para agregar al carrito
+  } else {
+    setError('No puedes agregar más de lo que hay en stock.');
+  }
+};
 
   return (
     <div className="item-count">

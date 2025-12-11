@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Item = ({ product, addToCart }) => {
   return (
     <Card style={{ width: '18rem', margin: '1rem' }}>
-      <Card.Img variant="top" src={product.image || 'https://via.placeholder.com/250'} alt={product.name} />
+      <Card.Img variant="top" src={product.img} alt={product.name} style={{width:'18rem'}}/>
       <Card.Body>
         <Card.Title>{product.name}</Card.Title>
         <Card.Text>Precio: ${product.price}</Card.Text>
