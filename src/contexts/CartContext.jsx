@@ -1,50 +1,56 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-const CartContext = createContext();
+// Crear el contexto del carrito
+export const CartContext = createContext();
 
-export const useCart = () => {
-  return useContext(CartContext);
-};
+// Usamos el hook para acceder al contexto del carrito
+export const useCart = () => useContext(CartContext);
 
+// El proveedor del contexto que envuelve a todos los componentes hijos
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem('cart');
+  // Definimos la constante para obtener el carrito guardado en localStorage
+  const getSavedCart = () => {
+    const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
-  });
-  
+  };
+
+  // Inicializamos el estado con la constante
+  const [cart, setCart] = useState(getSavedCart);
+
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
+    // Guardamos el carrito actualizado en el localStorage
+    localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
-const addToCart = (product) => {
-  setCart((prevCart) => {
-    const productInCart = prevCart.find(item => item.id === product.id);
-    if (productInCart) {
-      // Validar si hay suficiente stock
-      if (productInCart.quantity + product.quantity <= productInCart.stock) {
-        return prevCart.map(item =>
+
+  // Función para agregar productos al carrito
+  const addToCart = (product) => {
+    setCart((prevCart) => {
+      const existingProduct = prevCart.find((item) => item.id === product.id);
+      if (existingProduct) {
+        return prevCart.map((item) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + product.quantity }
             : item
         );
       } else {
-        alert('No puedes agregar más productos de los que hay en stock.');
-        return prevCart; // No modificamos el carrito si no hay stock suficiente
+        return [...prevCart, { ...product, quantity: product.quantity }];
       }
-    }
-    return [...prevCart, { ...product, quantity: product.quantity }];
-  });
-};
-  const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter(product => product.id !== productId));
+    });
   };
 
+  // Función para calcular la cantidad total de productos en el carrito
+  const cartQuantity = () => {
+    return cart.reduce((acc, item) => acc + item.quantity, 0);
+  };
+
+  // Función para limpiar el carrito
   const clearCart = () => {
     setCart([]);
-    localStorage.removeItem('cart');  // Limpiar el carrito en localStorage
+    localStorage.removeItem("cart");
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cart, addToCart, cartQuantity, clearCart }}>
       {children}
     </CartContext.Provider>
   );

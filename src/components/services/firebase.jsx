@@ -1,10 +1,10 @@
 // src/services/firebase.js
-import { getFirestore, collection, getDocs, doc, getDoc, query, where, addDoc } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs, doc, getDoc, query, where, addDoc } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
 
 // Configuración de Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyB4fIO901i2SDSc8r-MIWwlrGT-RgP3b6s",
+  apiKey: "AIzaSyB4fIO901i2SDSc8r-MIWwlrGT-RgP3b6s",  // Tu apiKey de Firebase
   authDomain: "coder-lex-81710.firebaseapp.com",
   projectId: "coder-lex-81710",
   storageBucket: "coder-lex-81710.firebasestorage.app",
@@ -12,7 +12,7 @@ const firebaseConfig = {
   appId: "1:269916809520:web:8778bc7ed2f1e7693c80f5"
 };
 
-// Inicializar Firebase
+// Inicializamos Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -31,17 +31,16 @@ export const getProductsFromFirestore = async () => {
     return productos;
   } catch (error) {
     console.error("Error al obtener productos desde Firestore:", error);
-    return [];
+    return []; // Devuelve un array vacío en caso de error
   }
 };
 
 // Obtener productos por categoría desde Firestore
 export const getProductsByCategory = async (categoryId) => {
   try {
-    // Crear una consulta para filtrar por categoría
     const q = query(collection(db, "productos"), where("category", "==", categoryId));
-
     const querySnapshot = await getDocs(q);
+
     const productos = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -50,11 +49,11 @@ export const getProductsByCategory = async (categoryId) => {
     return productos;
   } catch (error) {
     console.error("Error al obtener productos por categoría:", error);
-    return [];
+    return []; // Devuelve un array vacío en caso de error
   }
 };
 
-// Obtener un producto por ID
+// Obtener un producto por ID desde Firestore
 export const getProductById = async (id) => {
   console.log(`Buscando producto con ID: ${id}`);
   try {
@@ -63,26 +62,25 @@ export const getProductById = async (id) => {
 
     if (docSnapshot.exists()) {
       console.log("Producto encontrado:", docSnapshot.data());
-      return { id: docSnapshot.id, ...docSnapshot.data() };
+      return { id: docSnapshot.id, ...docSnapshot.data() }; // Retorna el producto encontrado
     } else {
-      console.log("Producto no encontrado");
-      throw new Error("Producto no encontrado");
+      throw new Error("Producto no encontrado"); // Si no se encuentra el producto
     }
   } catch (error) {
     console.error("Error al obtener el producto:", error);
-    throw new Error("Producto no encontrado"); // Se puede hacer un redireccionamiento aquí
-    // Por ejemplo, redirigir al listado de productos:
-    // history.push('/'); // Si usas React Router
+    throw error; // Lanza el error para ser manejado por quien llame la función
   }
 };
-// Agregar una orden a Firebase
+
+// Agregar una orden a Firestore
 export const addOrderToFirestore = async (orderDetails) => {
   try {
     const orderRef = await addDoc(collection(db, "orders"), orderDetails);
-    return orderRef.id;  // Devuelve el ID de la orden creada
+    console.log("Orden creada con éxito:", orderRef.id);
+    return orderRef.id;  // Retorna el ID de la orden creada
   } catch (error) {
     console.error("Error al crear la orden: ", error);
-    throw error;
+    throw error; // Lanza el error en caso de fallo
   }
 };
 

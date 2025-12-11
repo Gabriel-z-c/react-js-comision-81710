@@ -1,28 +1,22 @@
-// En el componente donde necesitas acceder al carrito, como CartView
-import { useCart } from '../contexts/CartContext';  
+// src/components/CartView.jsx
+import React from 'react';
+import { useCart } from '../contexts/CartContext'; // Accedemos al contexto del carrito
 
 const CartView = () => {
-  const { cart, removeFromCart, clearCart } = useCart();
+  const { cart, clearCart, getTotal } = useCart();  // Obtenemos el carrito, la función clear y getTotal desde el contexto
 
   if (cart.length === 0) {
-    return <p>El carrito está vacío.</p>;
+    return <p>El carrito está vacío</p>;
   }
-
-  const total = cart.reduce(
-    (sum, producto) => sum + producto.precio * producto.quantity,
-    0
-  );
-
   return (
     <div>
-      <h2>Tu Carrito</h2>
+      <h2>Tu carrito de compras</h2>
       {cart.map((producto) => (
         <div key={producto.id}>
-          <p>{producto.nombre} - ${producto.precio} x {producto.quantity}</p>
-          <button onClick={() => removeFromCart(producto.id)}>Eliminar</button>
+          <p>{producto.name} - ${producto.price} x {producto.quantity}</p>
         </div>
       ))}
-      <p>Total: ${total}</p>
+      <p>Total: ${getTotal()}</p>
       <button onClick={clearCart}>Vaciar carrito</button>
       <button>Finalizar compra</button>
     </div>
